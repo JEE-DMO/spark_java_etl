@@ -1,0 +1,44 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: report-generator
+
+  jvm:
+    options:
+      - --add-opens=java.base/java.nio=ALL-UNNAMED
+      - --add-opens=java.base/java.lang=ALL-UNNAMED
+
+server:
+  port: 8080
+
+spark:
+  master: "local[*]"
+  appName: "ReportGeneratorApp"
+  files:
+    F1: "./data/employees.csv"
+    F2: "./data/departments.csv"
+    F3: "./data/salaries.csv"
+    F4: "./data/locations.csv"
+    F5: "./data/projects.csv"
+  columns:
+    report1:
+      F1: ["employee_id", "first_name", "last_name"]
+      F2: ["department_name"]
+    report2:
+      F1: ["employee_id", "first_name", "last_name"]
+      F4: ["location_name"]
+    report3:
+      F1: ["employee_id", "first_name", "last_name"]
+      F2: ["department_name"]
+      F3: ["salary"]
+      F4: ["location_name"]
+      F5: ["project_name"]
+  intermediate:
+    F1: ["employee_id", "first_name", "last_name", "department_id"]
+    F2: ["department_id", "department_name", "location_id"]
+    F3: ["employee_id", "salary"]
+    F4: ["location_id", "location_name"]
+    F5: ["employee_id", "project_name"]
+report:
+  name: "R1"  # Default report to generate, can be overridden by command line parameter
